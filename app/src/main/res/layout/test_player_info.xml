@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:orientation="horizontal"
+    android:gravity="center">
+
+
+    <EditText
+        android:id="@+id/text_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="이름"
+        android:textSize="32sp"
+        android:layout_marginHorizontal="10dp"/>
+
+    <EditText
+        android:id="@+id/text_wins"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="0"
+        android:textSize="32sp"
+        android:layout_marginHorizontal="10dp"
+        android:inputType="numberDecimal"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="승"
+        android:textSize="32sp"
+        android:layout_marginHorizontal="10dp"/>
+    <EditText
+        android:id="@+id/text_draws"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="0"
+        android:textSize="32sp"
+        android:layout_marginHorizontal="10dp"
+        android:inputType="numberDecimal"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="무"
+        android:textSize="32sp"
+        android:layout_marginHorizontal="10dp"/>
+    <EditText
+        android:id="@+id/text_losses"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="0"
+        android:textSize="32sp"
+        android:layout_marginHorizontal="10dp"
+        android:inputType="numberDecimal"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="패"
+        android:textSize="32sp"
+        android:layout_marginHorizontal="10dp"/>
+
+
+</LinearLayout>

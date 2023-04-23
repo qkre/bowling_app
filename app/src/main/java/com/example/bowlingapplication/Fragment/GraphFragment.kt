@@ -1,4 +1,4 @@
-package com.example.bowlingapplication
+package com.example.bowlingapplication.Fragment
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
+import com.example.bowlingapplication.R
 import com.example.bowlingapplication.databinding.FragmentGraphBinding
 import java.text.SimpleDateFormat
 import java.util.*

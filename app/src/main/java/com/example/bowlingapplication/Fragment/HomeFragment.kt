@@ -1,4 +1,4 @@
-package com.example.bowlingapplication
+package com.example.bowlingapplication.Fragment
 
 import android.content.Context
 import android.os.Bundle

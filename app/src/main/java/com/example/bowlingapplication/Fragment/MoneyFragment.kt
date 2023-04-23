@@ -1,15 +1,17 @@
-package com.example.bowlingapplication
+package com.example.bowlingapplication.Fragment
 
 import android.app.AlertDialog
+import android.content.ComponentName
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.example.bowlingapplication.ForTestActivity
 import com.example.bowlingapplication.databinding.FragmentMoneyBinding
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis
@@ -37,7 +39,7 @@ class MoneyFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val sharedPreferences = requireActivity().getPreferences(Context.MODE_PRIVATE)
+
         lineChart = binding.lineChart
 
         val startDate = Calendar.getInstance(Locale.KOREA).apply {
@@ -52,10 +54,27 @@ class MoneyFragment : Fragment() {
 
         val currentDate = System.currentTimeMillis()
 
-        val juhyeon_profit = getPlayerData(binding, "juhyeon", startDate, currentDate)
-        val jehyeon_profit = getPlayerData(binding, "jehyeon", startDate, currentDate)
-        val seokyoung_profit = getPlayerData(binding, "seokyoung", startDate, currentDate)
+        val juhyeon_profit = getPlayerData(binding, "juhyeon")
+        val jehyeon_profit = getPlayerData(binding, "jehyeon")
+        val seokyoung_profit = getPlayerData(binding, "seokyoung")
 
+        setHogu(binding, juhyeon_profit, jehyeon_profit, seokyoung_profit)
+
+        binding.btnClear.setOnClickListener {
+            clearData(binding)
+        }
+        drawGraph(binding, startDate, currentDate)
+
+        binding.runTestBtn.setOnClickListener {
+            val intent = Intent()
+            val componentName = ComponentName(requireContext(), ForTestActivity::class.java)
+            intent.component = componentName
+            startActivity(intent)
+        }
+
+    }
+
+    private fun setHogu(binding: FragmentMoneyBinding, juhyeon_profit: Int, jehyeon_profit : Int, seokyoung_profit : Int){
         var minProfit = 0
         var minPlayer = ""
 
@@ -76,11 +95,10 @@ class MoneyFragment : Fragment() {
 
         binding.titleHogu.text =
             "\uD83E\uDD34\uD83C\uDFFB현재 호구 : ${minPlayer}\uD83E\uDD34\uD83C\uDFFB"
+    }
 
-        binding.btnClear.setOnClickListener {
-            clearData(binding, startDate, currentDate)
-        }
-
+    private fun drawGraph(binding: FragmentMoneyBinding, startDate: Long, currentDate: Long) {
+        val sharedPreferences = requireActivity().getPreferences(Context.MODE_PRIVATE)
         var juhyeon_entries = arrayListOf<Entry>()
         var jehyeon_entries = arrayListOf<Entry>()
         var seokyoung_entries = arrayListOf<Entry>()
@@ -112,13 +130,13 @@ class MoneyFragment : Fragment() {
         val top5_seokyoung_entries = arrayListOf<Entry>()
         val top5_dateList = arrayListOf<String>()
 
-        if(juhyeon_entries.size >= 5) {
+        if (juhyeon_entries.size >= 5) {
             index = 0f
             for (i in jehyeon_entries.size - 5..jehyeon_entries.size - 1) {
                 top5_jehyeon_entries.add(Entry(index, jehyeon_entries[i].y))
                 top5_juhyeon_entries.add(Entry(index, juhyeon_entries[i].y))
                 top5_seokyoung_entries.add(Entry(index, seokyoung_entries[i].y))
-                Log.d("date : ", dateList[i])
+
                 top5_dateList.add(dateList[i])
                 index += 1
             }
@@ -127,7 +145,6 @@ class MoneyFragment : Fragment() {
             jehyeon_entries = top5_jehyeon_entries
             seokyoung_entries = top5_seokyoung_entries
 
-            Log.d("juhyeon_entries :: ", juhyeon_entries.toString() )
             dateList = top5_dateList
         }
 
@@ -180,17 +197,15 @@ class MoneyFragment : Fragment() {
         lineChart.invalidate()
         lineChart.xAxis.valueFormatter = object : ValueFormatter() {
             override fun getFormattedValue(value: Float): String {
-                Log.d("value ::", value.toString())
+
                 return if (value < 0f || value >= dateList.size || value % 1f != 0f) "" else dateList[value.toInt()]
             }
         }
         val padding = 30f
         lineChart.setExtraOffsets(padding, padding, padding, padding)
-
     }
 
-
-    private fun clearData(binding: FragmentMoneyBinding, startDate: Long, currentDate: Long) {
+    private fun clearData(binding: FragmentMoneyBinding) {
 
         val sharedPreferences = requireActivity().getPreferences(Context.MODE_PRIVATE)
 
@@ -217,12 +232,7 @@ class MoneyFragment : Fragment() {
 
     }
 
-    private fun getPlayerData(
-        binding: FragmentMoneyBinding,
-        name: String,
-        startDate: Long,
-        currentDate: Long
-    ): Int {
+    private fun getPlayerData(binding: FragmentMoneyBinding, name: String): Int {
 
         val sharedPreferences = requireActivity().getPreferences(Context.MODE_PRIVATE)
 
@@ -281,16 +291,17 @@ class MoneyFragment : Fragment() {
 
     }
 
-    private fun getRatings (name: String, startDate : Long, currentDate : Long) : Float{
+    private fun getRatings(name: String, startDate: Long, currentDate: Long): Float {
         val sharedPreferences = requireActivity().getPreferences(Context.MODE_PRIVATE)
 
-        when(name){
+        when (name) {
             "juhyeon" -> {
                 var totalWins = 0
                 var totalDraws = 0
                 var totalLosses = 0
-                for(date in startDate .. currentDate step TimeUnit.DAYS.toMillis(1)){
-                    val formattedDate = SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(date)
+                for (date in startDate..currentDate step TimeUnit.DAYS.toMillis(1)) {
+                    val formattedDate =
+                        SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(date)
                     totalWins += sharedPreferences.getInt("${formattedDate}_${name}_wins", 0)
                     totalDraws += sharedPreferences.getInt("${formattedDate}_${name}_draws", 0)
                     totalLosses += sharedPreferences.getInt("${formattedDate}_${name}_losses", 0)
@@ -303,8 +314,9 @@ class MoneyFragment : Fragment() {
                 var totalWins = 0
                 var totalDraws = 0
                 var totalLosses = 0
-                for(date in startDate .. currentDate step TimeUnit.DAYS.toMillis(1)){
-                    val formattedDate = SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(date)
+                for (date in startDate..currentDate step TimeUnit.DAYS.toMillis(1)) {
+                    val formattedDate =
+                        SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(date)
                     totalWins += sharedPreferences.getInt("${formattedDate}_${name}_wins", 0)
                     totalDraws += sharedPreferences.getInt("${formattedDate}_${name}_draws", 0)
                     totalLosses += sharedPreferences.getInt("${formattedDate}_${name}_losses", 0)
@@ -317,8 +329,9 @@ class MoneyFragment : Fragment() {
                 var totalWins = 0
                 var totalDraws = 0
                 var totalLosses = 0
-                for(date in startDate .. currentDate step TimeUnit.DAYS.toMillis(1)){
-                    val formattedDate = SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(date)
+                for (date in startDate..currentDate step TimeUnit.DAYS.toMillis(1)) {
+                    val formattedDate =
+                        SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(date)
                     totalWins += sharedPreferences.getInt("${formattedDate}_${name}_wins", 0)
                     totalDraws += sharedPreferences.getInt("${formattedDate}_${name}_draws", 0)
                     totalLosses += sharedPreferences.getInt("${formattedDate}_${name}_losses", 0)

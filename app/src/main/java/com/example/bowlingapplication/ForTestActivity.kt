@@ -5,20 +5,19 @@ import android.os.Bundle
 import com.example.bowlingapplication.Fragment.GraphFragment
 import com.example.bowlingapplication.Fragment.HomeFragment
 import com.example.bowlingapplication.Fragment.MoneyFragment
-import com.example.bowlingapplication.databinding.ActivityMainBinding
+import com.example.bowlingapplication.TestFragment.TestHomeFragment
+import com.example.bowlingapplication.databinding.ActivityForTestBinding
 
-class MainActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding
+class ForTestActivity : AppCompatActivity() {
 
+    private lateinit var binding : ActivityForTestBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        binding = ActivityMainBinding.inflate(layoutInflater)
-
+        binding = ActivityForTestBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportFragmentManager.beginTransaction().replace(R.id.frame_layout, HomeFragment())
+        supportFragmentManager.beginTransaction().replace(R.id.frame_layout, TestHomeFragment())
             .commit()
 
         binding.bottomNav.setOnItemSelectedListener {
@@ -28,7 +27,7 @@ class MainActivity : AppCompatActivity() {
 
                 R.id.tab_main -> {
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.frame_layout, HomeFragment()).commit()
+                        .replace(R.id.frame_layout, TestHomeFragment()).commit()
                     return@setOnItemSelectedListener true
                 }
                 R.id.tab_graph -> {

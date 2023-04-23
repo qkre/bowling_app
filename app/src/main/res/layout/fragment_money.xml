@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:layout_margin="20dp"
-    tools:context=".MoneyFragment">
+    tools:context=".Fragment.MoneyFragment">
 
 
     <LinearLayout
@@ -156,5 +156,10 @@
             android:layout_height="wrap_content"
             android:text="기록 초기화"/>
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/run_test_btn"
+            android:text="테스트 액티비티 실행하기"/>
     </LinearLayout>
 </ScrollView>
