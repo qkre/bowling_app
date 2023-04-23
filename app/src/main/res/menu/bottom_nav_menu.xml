@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/tab_main"
+        android:checked="true"
+        android:enabled="true"
+        android:icon="@drawable/selector_menu_home"
+        android:title="메인"/>
+
+    <item
+        android:id="@+id/tab_graph"
+        android:checked="false"
+        android:enabled="true"
+        android:icon="@drawable/selector_menu_graph"
+        android:title="일간 기록"/>
+
+    <item
+        android:id="@+id/tab_money"
+        android:checked="false"
+        android:enabled="true"
+        android:icon="@drawable/selector_menu_money"
+        android:title="성장 비용"/>
+
+
+</menu>

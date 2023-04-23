@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:gravity="center"
+    tools:context=".HomeFragment"
+    android:layout_margin="20dp">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/juhyeon_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="박주현"
+                android:textSize="26sp"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:id="@+id/juhyeon_tv_WDL"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0승 0무 0패"
+                android:textSize="26sp"
+                android:layout_weight="1" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_weight="1">
+
+                <Button
+                    android:id="@+id/juhyeon_btn_win"
+                    android:layout_width="wrap_content"
+                    android:layout_height="60dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="#0000FF"
+                    android:textSize="26sp"
+                    android:text="승"/>
+                <Button
+                    android:id="@+id/juhyeon_btn_draw"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:backgroundTint="#828282"
+                    android:textSize="26sp"
+                    android:text="무"/>
+                <Button
+                    android:id="@+id/juhyeon_btn_lose"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textSize="26sp"
+                    android:text="패"/>
+                <Button
+                    android:id="@+id/juhyeon_btn_clear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="초기화"
+                    android:textSize="26sp"
+                    android:layout_weight="1"
+                    android:backgroundTint="#007700"/>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="박제현"
+                android:textSize="26sp"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:id="@+id/jehyeon_tv_WDL"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0승 0무 0패"
+                android:textSize="26sp"
+                android:layout_weight="1" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_weight="1">
+
+                <Button
+                    android:id="@+id/jehyeon_btn_win"
+                    android:layout_width="wrap_content"
+                    android:layout_height="60dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="#0000FF"
+                    android:textSize="26sp"
+                    android:text="승"/>
+                <Button
+                    android:id="@+id/jehyeon_btn_draw"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:backgroundTint="#828282"
+                    android:textSize="26sp"
+                    android:text="무"/>
+                <Button
+                    android:id="@+id/jehyeon_btn_lose"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textSize="26sp"
+                    android:text="패"/>
+
+                <Button
+                    android:id="@+id/jehyeon_btn_clear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="초기화"
+                    android:textSize="26sp"
+                    android:layout_weight="1"
+                    android:backgroundTint="#007700"/>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="정석영"
+                android:textSize="26sp"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:id="@+id/seokyoung_tv_WDL"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0승 0무 0패"
+                android:textSize="26sp"
+                android:layout_weight="1" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_weight="1">
+
+                <Button
+                    android:id="@+id/seokyoung_btn_win"
+                    android:layout_width="wrap_content"
+                    android:layout_height="60dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="#0000FF"
+                    android:textSize="26sp"
+                    android:text="승"/>
+                <Button
+                    android:id="@+id/seokyoung_btn_draw"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:backgroundTint="#828282"
+                    android:textSize="26sp"
+                    android:text="무"/>
+                <Button
+                    android:id="@+id/seokyoung_btn_lose"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textSize="26sp"
+                    android:text="패"/>
+
+                <Button
+                    android:id="@+id/seokyoung_btn_clear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="초기화"
+                    android:textSize="26sp"
+                    android:layout_weight="1"
+                    android:backgroundTint="#007700"/>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="등록"/>
+
+    </LinearLayout>
+
+
+
+
+
+
+</ScrollView>
