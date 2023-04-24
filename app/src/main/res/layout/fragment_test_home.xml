@@ -26,6 +26,11 @@
                 android:layout_height="wrap_content"
                 android:text="사용자 추가"
                 android:id="@+id/btn_add_player"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="저장하기"
+                android:id="@+id/btn_save"/>
 
         </LinearLayout>
 

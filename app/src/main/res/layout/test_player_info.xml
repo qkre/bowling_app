@@ -3,60 +3,93 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
-    android:orientation="horizontal"
-    android:gravity="center">
+    android:gravity="center"
+    android:orientation="horizontal">
 
 
-    <EditText
+    <TextView
         android:id="@+id/text_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
         android:hint="이름"
-        android:textSize="32sp"
-        android:layout_marginHorizontal="10dp"/>
+        android:textSize="32sp" />
 
-    <EditText
+    <TextView
         android:id="@+id/text_wins"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="0"
-        android:textSize="32sp"
-        android:layout_marginHorizontal="10dp"
-        android:inputType="numberDecimal"/>
+
+        android:text="0"
+        android:textSize="32sp" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
         android:text="승"
-        android:textSize="32sp"
-        android:layout_marginHorizontal="10dp"/>
-    <EditText
+        android:textSize="32sp" />
+
+    <TextView
         android:id="@+id/text_draws"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="0"
-        android:textSize="32sp"
-        android:layout_marginHorizontal="10dp"
-        android:inputType="numberDecimal"/>
+
+        android:text="0"
+        android:textSize="32sp" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
         android:text="무"
-        android:textSize="32sp"
-        android:layout_marginHorizontal="10dp"/>
-    <EditText
+        android:textSize="32sp" />
+
+    <TextView
         android:id="@+id/text_losses"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="0"
-        android:textSize="32sp"
-        android:layout_marginHorizontal="10dp"
-        android:inputType="numberDecimal"/>
+        android:text="0"
+        android:textSize="32sp" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
         android:text="패"
-        android:textSize="32sp"
-        android:layout_marginHorizontal="10dp"/>
+        android:textSize="32sp" />
+
+    <Button
+        android:id="@+id/btn_win"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_weight="1"
+        android:backgroundTint="#0000FF"
+        android:textSize="26sp"
+        android:text="승"/>
+    <Button
+        android:id="@+id/btn_draw"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:backgroundTint="#828282"
+        android:textSize="26sp"
+        android:text="무"/>
+    <Button
+        android:id="@+id/btn_lose"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:textSize="26sp"
+        android:text="패"/>
+    <Button
+        android:id="@+id/btn_clear"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text="초기화"
+        android:textSize="26sp"
+        android:layout_weight="1"
+        android:backgroundTint="#007700"/>
 
 
 </LinearLayout>
