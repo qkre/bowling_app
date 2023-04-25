@@ -2,8 +2,11 @@ package com.example.bowlingapplication.Fragment
 
 import android.annotation.SuppressLint
 import android.content.ContentValues
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.text.style.StyleSpan
+import android.os.Parcel
+import android.os.Parcelable
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,12 +15,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bowlingapplication.PlayerInfo
 import com.example.bowlingapplication.R
-import com.example.bowlingapplication.ShowPlayerAdapter
-import com.example.bowlingapplication.TestFiles.TestModFragment
+import com.example.bowlingapplication.ShowPlayerMiniAdapter
 import com.example.bowlingapplication.databinding.FragmentGraphBinding
 import com.google.android.material.datepicker.DayViewDecorator
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.prolificinteractive.materialcalendarview.CalendarDay
+import com.prolificinteractive.materialcalendarview.DayViewFacade
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -51,10 +55,10 @@ class GraphFragment : Fragment() {
 
         val recyclerView = binding.recyclerView
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        val showPlayerAdapter = ShowPlayerAdapter()
+        val showPlayerMiniAdapter = ShowPlayerMiniAdapter()
 
 
-        recyclerView.adapter = showPlayerAdapter
+        recyclerView.adapter = showPlayerMiniAdapter
 
         val dateDocument = db.collection(dateKey)
         dateDocument.get().addOnSuccessListener { documents ->
@@ -67,10 +71,10 @@ class GraphFragment : Fragment() {
 
                 myPlayer.add(PlayerInfo(playerName, playerWins, playerDraws, playerLosses))
             }
-            showPlayerAdapter.setItems(myPlayer)
+            showPlayerMiniAdapter.setItems(myPlayer)
         }.addOnFailureListener { _ ->
             val myPlayer = arrayListOf<PlayerInfo>(PlayerInfo("이날은 데이터가 없네요.", 0, 0, 0))
-            showPlayerAdapter.setItems(myPlayer)
+            showPlayerMiniAdapter.setItems(myPlayer)
         }
 
         binding.btnDayMod.setOnClickListener {
@@ -103,7 +107,7 @@ class GraphFragment : Fragment() {
                 Log.w(ContentValues.TAG, "Error deleting collection", exception)
             }
             val myPlayer = arrayListOf<PlayerInfo>()
-            showPlayerAdapter.setItems(myPlayer)
+            showPlayerMiniAdapter.setItems(myPlayer)
 
             val dateRef = db.collection("dateList")
             dateRef.get().addOnSuccessListener { documents ->
@@ -116,17 +120,31 @@ class GraphFragment : Fragment() {
 
         }
 
+        val calendarView = binding.calendarView
+        val dateList = arrayListOf<String>()
+        db.collection("dateList").get().addOnSuccessListener {
+            documents -> for(document in documents) {
+            dateList.add(document.id)
+        }
 
+        }
+        calendarView.setOnDateChangedListener { _, date, _ ->
+            val year = date.year
+            val month = if (date.month < 10) {
+                "0${date.month}"
+            } else {
+                "${date.month}"
+            }
+            val day = if (date.day < 10) {
+                "0${date.day}"
+            } else {
+                "${date.day}"
+            }
+            val dateKey = "$year$month$day"
+            Log.d("DateKey :: ", dateKey)
 
-        binding.caledarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
-            // 날짜가 변경될 때마다 텍스트뷰에 업데이트
-            val calendar = Calendar.getInstance()
-            calendar.set(year, month, dayOfMonth)
-            binding.today.text =
-                SimpleDateFormat("yyyy년 MM월 dd일", Locale.getDefault()).format(calendar.timeInMillis)
-            val currentDate = calendar.timeInMillis
-            val dateFormat = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
-            val dateKey = dateFormat.format(currentDate)
+            binding.today.text = "${year}년 ${month}월 ${day}일"
+
             val dateDocument = db.collection(dateKey)
 
             dateDocument.get().addOnSuccessListener { documents ->
@@ -139,10 +157,10 @@ class GraphFragment : Fragment() {
 
                     myPlayer.add(PlayerInfo(playerName, playerWins, playerDraws, playerLosses))
                 }
-                showPlayerAdapter.setItems(myPlayer)
+                showPlayerMiniAdapter.setItems(myPlayer)
             }.addOnFailureListener { _ ->
                 val myPlayer = arrayListOf(PlayerInfo("이날은 데이터가 없네요.", 0, 0, 0))
-                showPlayerAdapter.setItems(myPlayer)
+                showPlayerMiniAdapter.setItems(myPlayer)
             }
 
             binding.btnDayClear.setOnClickListener {
@@ -164,7 +182,7 @@ class GraphFragment : Fragment() {
                     Log.w(ContentValues.TAG, "Error deleting collection", exception)
                 }
                 val myPlayer = arrayListOf<PlayerInfo>()
-                showPlayerAdapter.setItems(myPlayer)
+                showPlayerMiniAdapter.setItems(myPlayer)
 
             }
 
@@ -179,8 +197,12 @@ class GraphFragment : Fragment() {
                     .addToBackStack(null)
                     .commit()
             }
+
+
         }
+
 
     }
 
 }
+
