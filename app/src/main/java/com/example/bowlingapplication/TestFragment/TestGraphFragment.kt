@@ -1,32 +1,24 @@
-package com.example.bowlingapplication.Fragment
+package com.example.bowlingapplication.TestFragment
 
-import android.annotation.SuppressLint
-import android.app.AlertDialog
-import android.content.ContentValues
-import android.content.Context
+import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bowlingapplication.PlayerInfo
 import com.example.bowlingapplication.R
 import com.example.bowlingapplication.ShowPlayerAdapter
-import com.example.bowlingapplication.TestFragment.TestModFragment
-import com.example.bowlingapplication.databinding.FragmentGraphBinding
+import com.example.bowlingapplication.databinding.FragmentTestGraphBinding
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.concurrent.TimeUnit
 
-
-class GraphFragment : Fragment() {
-    private var _binding: FragmentGraphBinding? = null
+class TestGraphFragment : Fragment() {
+    private var _binding: FragmentTestGraphBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -34,14 +26,11 @@ class GraphFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentGraphBinding.inflate(inflater, container, false)
+        _binding = FragmentTestGraphBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    @SuppressLint("MissingInflatedId")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
         super.onViewCreated(view, savedInstanceState)
 
         val db = Firebase.firestore
@@ -96,14 +85,14 @@ class GraphFragment : Fragment() {
                     document.reference.delete()
                 }
             }.addOnFailureListener { exception ->
-                Log.w(ContentValues.TAG, "Error deleting documents", exception)
+                Log.w(TAG, "Error deleting documents", exception)
             }
 
 // Delete the collection
             collectionRef.document().delete().addOnSuccessListener {
-                Log.d(ContentValues.TAG, "Collection successfully deleted!")
+                Log.d(TAG, "Collection successfully deleted!")
             }.addOnFailureListener { exception ->
-                Log.w(ContentValues.TAG, "Error deleting collection", exception)
+                Log.w(TAG, "Error deleting collection", exception)
             }
             val myPlayer = arrayListOf<PlayerInfo>()
             showPlayerAdapter.setItems(myPlayer)
@@ -146,14 +135,14 @@ class GraphFragment : Fragment() {
                         document.reference.delete()
                     }
                 }.addOnFailureListener { exception ->
-                    Log.w(ContentValues.TAG, "Error deleting documents", exception)
+                    Log.w(TAG, "Error deleting documents", exception)
                 }
 
                 // Delete the collection
                 collectionRef.document().delete().addOnSuccessListener {
-                    Log.d(ContentValues.TAG, "Collection successfully deleted!")
+                    Log.d(TAG, "Collection successfully deleted!")
                 }.addOnFailureListener { exception ->
-                    Log.w(ContentValues.TAG, "Error deleting collection", exception)
+                    Log.w(TAG, "Error deleting collection", exception)
                 }
                 val myPlayer = arrayListOf<PlayerInfo>()
                 showPlayerAdapter.setItems(myPlayer)

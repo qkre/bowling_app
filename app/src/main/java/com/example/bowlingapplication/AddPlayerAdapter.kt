@@ -7,7 +7,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class PlayerAdapter : RecyclerView.Adapter<PlayerAdapter.ViewHolder>() {
+class AddPlayerAdapter : RecyclerView.Adapter<AddPlayerAdapter.ViewHolder>() {
 
     private var items: List<PlayerInfo> = emptyList()
 
@@ -18,7 +18,7 @@ class PlayerAdapter : RecyclerView.Adapter<PlayerAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.test_player_info, parent, false)
+            .inflate(R.layout.test_add_player_info, parent, false)
         return ViewHolder(view)
     }
 
@@ -79,6 +79,11 @@ class PlayerAdapter : RecyclerView.Adapter<PlayerAdapter.ViewHolder>() {
                 winsTextView.text = "0"
                 drawsTextView.text = "0"
                 lossesTextView.text = "0"
+                val playerInfo = items[adapterPosition]
+                playerInfo.wins = 0
+                playerInfo.draws = 0
+                playerInfo.losses = 0
+                listener.onPlayerInfoChanged(playerInfo)
             }
         }
 

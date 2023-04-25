@@ -5,7 +5,9 @@ import android.os.Bundle
 import com.example.bowlingapplication.Fragment.GraphFragment
 import com.example.bowlingapplication.Fragment.HomeFragment
 import com.example.bowlingapplication.Fragment.MoneyFragment
+import com.example.bowlingapplication.TestFragment.TestGraphFragment
 import com.example.bowlingapplication.TestFragment.TestHomeFragment
+import com.example.bowlingapplication.TestFragment.TestMoneyFragment
 import com.example.bowlingapplication.databinding.ActivityForTestBinding
 
 class ForTestActivity : AppCompatActivity() {
@@ -32,12 +34,12 @@ class ForTestActivity : AppCompatActivity() {
                 }
                 R.id.tab_graph -> {
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.frame_layout, GraphFragment()).commit()
+                        .replace(R.id.frame_layout, TestGraphFragment()).commit()
                     return@setOnItemSelectedListener true
                 }
                 R.id.tab_money -> {
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.frame_layout, MoneyFragment()).commit()
+                        .replace(R.id.frame_layout, TestMoneyFragment()).commit()
                     return@setOnItemSelectedListener true
                 }
                 else -> {
