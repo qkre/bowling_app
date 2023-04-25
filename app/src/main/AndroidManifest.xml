@@ -14,7 +14,7 @@
         android:theme="@style/Theme.BowlingApplication"
         tools:targetApi="31">
         <activity
-            android:name=".ForTestActivity"
+            android:name=".TestFiles.ForTestActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

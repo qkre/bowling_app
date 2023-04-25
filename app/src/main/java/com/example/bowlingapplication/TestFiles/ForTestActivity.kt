@@ -1,13 +1,8 @@
-package com.example.bowlingapplication
+package com.example.bowlingapplication.TestFiles
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.bowlingapplication.Fragment.GraphFragment
-import com.example.bowlingapplication.Fragment.HomeFragment
-import com.example.bowlingapplication.Fragment.MoneyFragment
-import com.example.bowlingapplication.TestFragment.TestGraphFragment
-import com.example.bowlingapplication.TestFragment.TestHomeFragment
-import com.example.bowlingapplication.TestFragment.TestMoneyFragment
+import com.example.bowlingapplication.R
 import com.example.bowlingapplication.databinding.ActivityForTestBinding
 
 class ForTestActivity : AppCompatActivity() {

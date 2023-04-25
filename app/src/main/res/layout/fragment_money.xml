@@ -1,165 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:layout_margin="20dp"
+    android:layout_margin="10dp"
     tools:context=".Fragment.MoneyFragment">
 
-
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:gravity="center"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <TextView
-            android:id="@+id/title_hogu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:text="🤴🏻현재 호구 : 아무개🤴🏻"
-            android:textSize="35sp"/>
+            android:textSize="26sp"
+            android:id="@+id/king_hogu"/>
 
-        <LinearLayout
-            android:id="@+id/juhyeon_layout"
+        <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:orientation="horizontal"
-            android:weightSum="4">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="박주현"
-                android:textSize="26sp"
-                android:layout_weight="1"/>
-
-            <TextView
-                android:id="@+id/juhyeon_tv_WDL"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="0승 0무 0패"
-                android:textSize="26sp"
-                android:layout_weight="1" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="승률 : 0.0%"
-                android:textSize="26sp"
-                android:layout_weight="1"
-                android:id="@+id/juhyeon_percentage"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="총액 : 0원"
-                android:textSize="26sp"
-                android:layout_weight="1"
-                android:id="@+id/juhyeon_tv_sum"/>
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:orientation="horizontal"
-            android:weightSum="4">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="박제현"
-                android:textSize="26sp"
-                android:layout_weight="1"/>
-
-            <TextView
-                android:id="@+id/jehyeon_tv_WDL"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="0승 0무 0패"
-                android:textSize="26sp"
-                android:layout_weight="1" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="승률 : 0.0%"
-                android:textSize="26sp"
-                android:layout_weight="1"
-                android:id="@+id/jehyeon_percentage"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="총액 : 0원"
-                android:textSize="26sp"
-                android:layout_weight="1"
-                android:id="@+id/jehyeon_tv_sum"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:orientation="horizontal"
-            android:weightSum="4">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="정석영"
-                android:textSize="26sp"
-                android:layout_weight="1"/>
-
-            <TextView
-                android:id="@+id/seokyoung_tv_WDL"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="0승 0무 0패"
-                android:textSize="26sp"
-                android:layout_weight="1" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="승률 : 0.0%"
-                android:textSize="26sp"
-                android:layout_weight="1"
-                android:id="@+id/seokyoung_percentage"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="총액 : 0원"
-                android:textSize="26sp"
-                android:layout_weight="1"
-                android:id="@+id/seokyoung_tv_sum"/>
-
-
-        </LinearLayout>
-
-        <com.github.mikephil.charting.charts.LineChart
-            android:id="@+id/lineChart"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"/>
-
+            android:layout_gravity="center"
+            android:id="@+id/recyclerView"/>
 
         <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:id="@+id/btn_clear"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="기록 초기화"/>
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/run_test_btn"
-            android:text="테스트 액티비티 실행하기"/>
+            android:text="초기화"/>
     </LinearLayout>
-</ScrollView>
+
+
+
+
+</androidx.core.widget.NestedScrollView>

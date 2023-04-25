@@ -16,6 +16,7 @@ class ShowPlayerAdapter : RecyclerView.Adapter<ShowPlayerAdapter.ViewHolder>() {
         val playerDraws: TextView = itemView.findViewById(R.id.player_draw)
         val playerLosses: TextView = itemView.findViewById(R.id.player_loss)
         val playerCosts: TextView = itemView.findViewById(R.id.player_cost)
+        val playerRatings: TextView = itemView.findViewById(R.id.player_ratings)
 
         fun bind(item: PlayerInfo){
             playerName.text = item.name
@@ -23,6 +24,7 @@ class ShowPlayerAdapter : RecyclerView.Adapter<ShowPlayerAdapter.ViewHolder>() {
             playerDraws.text = item.draws.toString()
             playerLosses.text = item.losses.toString()
             playerCosts.text = (item.draws * 2500 + item.losses * 5000).toString()
+            playerRatings.text = String.format("%.2f", (item.wins.toFloat() / (item.wins + item.draws + item.losses) * 100))
         }
     }
 
@@ -32,7 +34,7 @@ class ShowPlayerAdapter : RecyclerView.Adapter<ShowPlayerAdapter.ViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.test_show_player_info, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.show_player_info, parent, false)
         return ViewHolder(view)
     }
 

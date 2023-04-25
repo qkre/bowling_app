@@ -1,23 +1,17 @@
-package com.example.bowlingapplication.TestFragment
+package com.example.bowlingapplication.TestFiles
 
-import android.app.ProgressDialog.show
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.bowlingapplication.AddPlayerAdapter
 import com.example.bowlingapplication.PlayerInfo
-import com.example.bowlingapplication.R
 import com.example.bowlingapplication.ShowPlayerAdapter
 import com.example.bowlingapplication.databinding.FragmentTestMoneyBinding
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import java.text.SimpleDateFormat
 import java.util.*
-import java.util.concurrent.TimeUnit
 
 class TestMoneyFragment : Fragment() {
     private var _binding: FragmentTestMoneyBinding? = null

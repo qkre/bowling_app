@@ -1,28 +1,25 @@
 package com.example.bowlingapplication.Fragment
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.content.ContentValues
-import android.content.Context
 import android.os.Bundle
+import android.text.style.StyleSpan
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bowlingapplication.PlayerInfo
 import com.example.bowlingapplication.R
 import com.example.bowlingapplication.ShowPlayerAdapter
-import com.example.bowlingapplication.TestFragment.TestModFragment
+import com.example.bowlingapplication.TestFiles.TestModFragment
 import com.example.bowlingapplication.databinding.FragmentGraphBinding
+import com.google.android.material.datepicker.DayViewDecorator
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.concurrent.TimeUnit
 
 
 class GraphFragment : Fragment() {
@@ -77,12 +74,12 @@ class GraphFragment : Fragment() {
         }
 
         binding.btnDayMod.setOnClickListener {
-            val testModFragment = TestModFragment()
+            val ModFragment = ModFragment()
             val bundle = Bundle().apply { putString("dateKey", dateKey) }
-            testModFragment.arguments = bundle
+            ModFragment.arguments = bundle
 
             requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.frame_layout, testModFragment)
+                .replace(R.id.frame_layout, ModFragment)
                 .addToBackStack(null)
                 .commit()
         }
@@ -108,7 +105,18 @@ class GraphFragment : Fragment() {
             val myPlayer = arrayListOf<PlayerInfo>()
             showPlayerAdapter.setItems(myPlayer)
 
+            val dateRef = db.collection("dateList")
+            dateRef.get().addOnSuccessListener { documents ->
+                for (document in documents) {
+                    if (document.id == dateKey) {
+                        document.reference.delete()
+                    }
+                }
+            }
+
         }
+
+
 
         binding.caledarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
             // 날짜가 변경될 때마다 텍스트뷰에 업데이트
@@ -161,16 +169,18 @@ class GraphFragment : Fragment() {
             }
 
             binding.btnDayMod.setOnClickListener {
-                val testModFragment = TestModFragment()
+                val ModFragment = ModFragment()
                 val bundle = Bundle().apply { putString("dateKey", dateKey) }
-                testModFragment.arguments = bundle
+                ModFragment.arguments = bundle
+                Log.d("dateKey :: ", dateKey)
 
                 requireActivity().supportFragmentManager.beginTransaction()
-                    .replace(R.id.frame_layout, testModFragment)
+                    .replace(R.id.frame_layout, ModFragment)
                     .addToBackStack(null)
                     .commit()
             }
         }
 
     }
+
 }

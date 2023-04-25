@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
@@ -18,7 +19,7 @@ class AddPlayerAdapter : RecyclerView.Adapter<AddPlayerAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.test_add_player_info, parent, false)
+            .inflate(R.layout.add_player_info, parent, false)
         return ViewHolder(view)
     }
 
@@ -41,6 +42,10 @@ class AddPlayerAdapter : RecyclerView.Adapter<AddPlayerAdapter.ViewHolder>() {
         this.listener = listener
     }
 
+    fun getItem(): ArrayList<PlayerInfo> {
+        return this.items as ArrayList<PlayerInfo>
+    }
+
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         val nameTextView: TextView = itemView.findViewById(R.id.text_name)
@@ -51,8 +56,13 @@ class AddPlayerAdapter : RecyclerView.Adapter<AddPlayerAdapter.ViewHolder>() {
         val btnDraw: Button = itemView.findViewById(R.id.btn_draw)
         val btnLose: Button = itemView.findViewById(R.id.btn_lose)
         val btnClear: Button = itemView.findViewById(R.id.btn_clear)
-
+        val btnDelete: ImageView = itemView.findViewById(R.id.btn_delete_player)
         init {
+            btnDelete.setOnClickListener {
+                val playerInfo = items[adapterPosition]
+                items = items.filter { it != playerInfo }
+                notifyItemRemoved(adapterPosition)
+            }
             btnWin.setOnClickListener {
 
                 val wins = winsTextView.text.toString().toInt()
