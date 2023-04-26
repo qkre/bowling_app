@@ -1,5 +1,6 @@
 package com.example.bowlingapplication.Fragment
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -50,11 +51,11 @@ class MoneyFragment : Fragment() {
 
         dateList.get().addOnSuccessListener { documents ->
             val myPlayer = arrayListOf<PlayerInfo>()
-            for (document in documents){
+            for (document in documents) {
                 val dateKey = document.id
                 val data = db.collection(dateKey)
-                data.get().addOnSuccessListener {documents ->
-                    for(document in documents) {
+                data.get().addOnSuccessListener { documents ->
+                    for (document in documents) {
                         val playerName = document.id
                         val playerWins = document.getLong("wins")?.toInt() ?: 0
                         val playerDraws = document.getLong("draws")?.toInt() ?: 0
@@ -66,12 +67,20 @@ class MoneyFragment : Fragment() {
                             playerInfo.losses += playerLosses
                             playerInfo.draws += playerDraws
                         } else {
-                            myPlayer.add(PlayerInfo(playerName, playerWins, playerDraws, playerLosses))
+                            myPlayer.add(
+                                PlayerInfo(
+                                    playerName,
+                                    playerWins,
+                                    playerDraws,
+                                    playerLosses
+                                )
+                            )
                         }
                     }
                     val sortedPlayerList = sortByRaiting(myPlayer)
                     showPlayerAdapter.setItems(sortedPlayerList)
-                    binding.kingHogu.text = "\uD83E\uDD34\uD83C\uDFFB 호구왕 : ${sortedPlayerList[sortedPlayerList.size-1].name} \uD83E\uDD34\uD83C\uDFFB"
+                    binding.kingHogu.text =
+                        "\uD83E\uDD34\uD83C\uDFFB 호구왕 : ${sortedPlayerList[sortedPlayerList.size - 1].name} \uD83E\uDD34\uD83C\uDFFB"
                 }
 
             }
@@ -79,36 +88,42 @@ class MoneyFragment : Fragment() {
         }
 
         binding.btnClear.setOnClickListener {
-            dateList.get().addOnSuccessListener {documents ->
-                for (document in documents) {
-                    val collectionRef = db.collection(document.id)
-                    collectionRef.get().addOnSuccessListener {documents ->
-                        for(document in documents){
+            AlertDialog.Builder(requireContext())
+                .setTitle("데이터 삭제")
+                .setMessage("정말 모든 데이터를 삭제하시겠습니까?")
+                .setPositiveButton("예") { _, _ ->
+                    dateList.get().addOnSuccessListener { documents ->
+                        for (document in documents) {
+                            val collectionRef = db.collection(document.id)
+                            collectionRef.get().addOnSuccessListener { documents ->
+                                for (document in documents) {
+                                    document.reference.delete()
+                                }
+                            }
+                            collectionRef.document().delete()
+                        }
+
+                        for (document in documents) {
                             document.reference.delete()
                         }
+                        dateList.document().delete()
                     }
-                    collectionRef.document().delete()
-                }
-
-                for(document in documents){
-                    document.reference.delete()
-                }
-                dateList.document().delete()
-            }
-            showPlayerAdapter.setItems(arrayListOf())
+                    showPlayerAdapter.setItems(arrayListOf())
+                }.setNegativeButton("아니오", null).show()
         }
+
     }
 
-    private fun whoTheHogu(playerList: List<PlayerInfo>):String{
+    private fun whoTheHogu(playerList: List<PlayerInfo>): String {
         var minRaiting = 100f
         var hogu = ""
-        for(player in playerList){
+        for (player in playerList) {
             val wins = player.wins
             val draws = player.draws
             val losses = player.losses
-            val rating = (wins.toFloat()) / (wins+draws+losses) * 100
+            val rating = (wins.toFloat()) / (wins + draws + losses) * 100
             Log.d("ratings :: ", "${player.name} : $rating")
-            if(rating < minRaiting){
+            if (rating < minRaiting) {
                 hogu = player.name
             }
         }
@@ -116,7 +131,7 @@ class MoneyFragment : Fragment() {
         return "🤴🏻현재 호구 : ${hogu}🤴🏻"
     }
 
-    private fun sortByRaiting(playerList: List<PlayerInfo>): List<PlayerInfo>{
+    private fun sortByRaiting(playerList: List<PlayerInfo>): List<PlayerInfo> {
         // 각각의 PlayerInfo에 대한 승률을 계산하고 새로운 리스트에 추가합니다.
         val calculatedList = playerList.map {
             val totalGames = it.wins + it.draws + it.losses

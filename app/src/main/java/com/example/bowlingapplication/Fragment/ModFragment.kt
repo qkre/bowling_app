@@ -51,6 +51,11 @@ class ModFragment : Fragment() {
         val addPlayerAdapter = AddPlayerAdapter()
         recyclerView.adapter = addPlayerAdapter
 
+        addPlayerAdapter.setListener(object : AddPlayerAdapter.PlayerInfoListener {
+            override fun onPlayerInfoChanged(playerInfo: PlayerInfo) {
+                // 이 곳에서 변경된 플레이어 정보를 처리합니다.
+            }
+        })
 
         val dateKey = arguments?.getString("dateKey")
         if (dateKey != null) {
@@ -71,6 +76,7 @@ class ModFragment : Fragment() {
 
 
             binding.btnAddPlayer.setOnClickListener {
+                myPlayer = addPlayerAdapter.getItem()
                 val builder = AlertDialog.Builder(requireContext())
                 val dialogView =
                     LayoutInflater.from(requireContext())

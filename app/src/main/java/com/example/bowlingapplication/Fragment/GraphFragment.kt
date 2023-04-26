@@ -1,6 +1,7 @@
 package com.example.bowlingapplication.Fragment
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.ContentValues
 import android.graphics.Color
 import android.graphics.Typeface
@@ -64,6 +65,9 @@ class GraphFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         val showPlayerMiniAdapter = ShowPlayerMiniAdapter()
 
+        val calendarView = binding.calendarView
+        calendarView.selectionMode = MaterialCalendarView.SELECTION_MODE_SINGLE
+        calendarView.setSelectedDate(CalendarDay.today())
 
         recyclerView.adapter = showPlayerMiniAdapter
 
@@ -96,8 +100,25 @@ class GraphFragment : Fragment() {
         }
 
         binding.btnDayClear.setOnClickListener {
-            val collectionRef = db.collection(dateKey)
+            AlertDialog.Builder(requireContext())
+                .setTitle("데이터 삭제")
+                .setMessage("정말 모든 데이터를 삭제하시겠습니까?")
+                .setPositiveButton("예") { _, _ ->
+                    val dateRef = db.collection("dateList")
+                    dateRef.get().addOnSuccessListener { documents ->
+                        for (document in documents) {
+                            if (document.id == dateKey) {
+                                document.reference.delete()
+                                dateList.remove(dateKey)
+                                Log.d("dateList :: ", dateList.toString())
+                            }
+                        }
+                        calendarView.removeDecorators()
+                        calendarView.addDecorator(CustomDayViewDecorator(dateList))
+                    }
+                }.setNegativeButton("아니오", null).show()
 
+            val collectionRef = db.collection(dateKey)
             // Delete all documents in the collection
             collectionRef.get().addOnSuccessListener { documents ->
                 for (document in documents) {
@@ -107,7 +128,7 @@ class GraphFragment : Fragment() {
                 Log.w(ContentValues.TAG, "Error deleting documents", exception)
             }
 
-// Delete the collection
+            // Delete the collection
             collectionRef.document().delete().addOnSuccessListener {
                 Log.d(ContentValues.TAG, "Collection successfully deleted!")
             }.addOnFailureListener { exception ->
@@ -116,20 +137,9 @@ class GraphFragment : Fragment() {
             val myPlayer = arrayListOf<PlayerInfo>()
             showPlayerMiniAdapter.setItems(myPlayer)
 
-            val dateRef = db.collection("dateList")
-            dateRef.get().addOnSuccessListener { documents ->
-                for (document in documents) {
-                    if (document.id == dateKey) {
-                        document.reference.delete()
-                    }
-                }
-            }
-
         }
 
-        val calendarView = binding.calendarView
-        calendarView.selectionMode = MaterialCalendarView.SELECTION_MODE_SINGLE
-        calendarView.setSelectedDate(CalendarDay.today())
+
 
 
 
@@ -176,26 +186,42 @@ class GraphFragment : Fragment() {
             }
 
             binding.btnDayClear.setOnClickListener {
-                val collectionRef = db.collection(dateKey)
+                AlertDialog.Builder(requireContext())
+                    .setTitle("데이터 삭제")
+                    .setMessage("정말 모든 데이터를 삭제하시겠습니까?")
+                    .setPositiveButton("예") { _, _ ->
+                        val dateRef = db.collection("dateList")
+                        dateRef.get().addOnSuccessListener { documents ->
+                            for (document in documents) {
+                                if (document.id == dateKey) {
+                                    document.reference.delete()
+                                    dateList.remove(dateKey)
+                                    Log.d("dateList :: ", dateList.toString())
+                                }
+                            }
+                            calendarView.removeDecorators()
+                            calendarView.addDecorator(CustomDayViewDecorator(dateList))
+                        }
+                        val collectionRef = db.collection(dateKey)
 
-                // Delete all documents in the collection
-                collectionRef.get().addOnSuccessListener { documents ->
-                    for (document in documents) {
-                        document.reference.delete()
-                    }
-                }.addOnFailureListener { exception ->
-                    Log.w(ContentValues.TAG, "Error deleting documents", exception)
-                }
+                        // Delete all documents in the collection
+                        collectionRef.get().addOnSuccessListener { documents ->
+                            for (document in documents) {
+                                document.reference.delete()
+                            }
+                        }.addOnFailureListener { exception ->
+                            Log.w(ContentValues.TAG, "Error deleting documents", exception)
+                        }
 
-                // Delete the collection
-                collectionRef.document().delete().addOnSuccessListener {
-                    Log.d(ContentValues.TAG, "Collection successfully deleted!")
-                }.addOnFailureListener { exception ->
-                    Log.w(ContentValues.TAG, "Error deleting collection", exception)
-                }
-                val myPlayer = arrayListOf<PlayerInfo>()
-                showPlayerMiniAdapter.setItems(myPlayer)
-
+                        // Delete the collection
+                        collectionRef.document().delete().addOnSuccessListener {
+                            Log.d(ContentValues.TAG, "Collection successfully deleted!")
+                        }.addOnFailureListener { exception ->
+                            Log.w(ContentValues.TAG, "Error deleting collection", exception)
+                        }
+                        val myPlayer = arrayListOf<PlayerInfo>()
+                        showPlayerMiniAdapter.setItems(myPlayer)
+                    }.setNegativeButton("아니오", null).show()
             }
 
             binding.btnDayMod.setOnClickListener {
@@ -251,7 +277,8 @@ class GraphFragment : Fragment() {
                     time = date
                 }
                 val year = calendar.get(Calendar.YEAR)
-                val month = calendar.get(Calendar.MONTH) + 1 // Calendar.MONTH의 범위는 0부터 11이므로 1을 더해줍니다.
+                val month =
+                    calendar.get(Calendar.MONTH) + 1 // Calendar.MONTH의 범위는 0부터 11이므로 1을 더해줍니다.
                 val dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
                 val calendarDay = CalendarDay.from(year, month, dayOfMonth)
                 if (day?.equals(calendarDay) == true) {

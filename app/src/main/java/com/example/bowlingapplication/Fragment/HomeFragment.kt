@@ -126,6 +126,7 @@ class HomeFragment : Fragment() {
             }
 
             db.collection("dateList").document(date).set(hashMapOf("date" to date))
+            Toast.makeText(requireContext(), "저장되었습니다.", Toast.LENGTH_SHORT).show()
         }
 
     }
