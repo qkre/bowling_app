@@ -1,6 +1,7 @@
 package com.example.bowlingapplication.Fragment
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -67,12 +68,14 @@ class MoneyFragment : Fragment() {
                         } else {
                             myPlayer.add(PlayerInfo(playerName, playerWins, playerDraws, playerLosses))
                         }
-
                     }
-                    showPlayerAdapter.setItems(myPlayer)
-                    binding.kingHogu.text = whoTheHogu(myPlayer)
+                    val sortedPlayerList = sortByRaiting(myPlayer)
+                    showPlayerAdapter.setItems(sortedPlayerList)
+                    binding.kingHogu.text = "\uD83E\uDD34\uD83C\uDFFB 호구왕 : ${sortedPlayerList[sortedPlayerList.size-1].name} \uD83E\uDD34\uD83C\uDFFB"
                 }
+
             }
+
         }
 
         binding.btnClear.setOnClickListener {
@@ -97,17 +100,36 @@ class MoneyFragment : Fragment() {
     }
 
     private fun whoTheHogu(playerList: List<PlayerInfo>):String{
-        var maxCost = 0
+        var minRaiting = 100f
         var hogu = ""
         for(player in playerList){
-            val paidCost = player.draws*2500 + player.losses * 5000
-            if(maxCost <= paidCost){
-                maxCost = paidCost
+            val wins = player.wins
+            val draws = player.draws
+            val losses = player.losses
+            val rating = (wins.toFloat()) / (wins+draws+losses) * 100
+            Log.d("ratings :: ", "${player.name} : $rating")
+            if(rating < minRaiting){
                 hogu = player.name
             }
         }
 
         return "🤴🏻현재 호구 : ${hogu}🤴🏻"
+    }
+
+    private fun sortByRaiting(playerList: List<PlayerInfo>): List<PlayerInfo>{
+        // 각각의 PlayerInfo에 대한 승률을 계산하고 새로운 리스트에 추가합니다.
+        val calculatedList = playerList.map {
+            val totalGames = it.wins + it.draws + it.losses
+            val winRate = if (totalGames == 0) {
+                0f
+            } else {
+                it.wins.toFloat() / totalGames
+            }
+            Pair(it, winRate)
+        }
+
+        // 승률에 따라 내림차순으로 정렬한 새로운 리스트를 반환합니다.
+        return calculatedList.sortedByDescending { it.second }.map { it.first }
     }
 
 }

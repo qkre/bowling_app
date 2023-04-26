@@ -3,15 +3,20 @@ package com.example.bowlingapplication.Fragment
 import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.graphics.Color
+import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Parcel
 import android.os.Parcelable
+import android.text.style.ForegroundColorSpan
+import android.text.style.RelativeSizeSpan
+import android.text.style.StyleSpan
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bowlingapplication.PlayerInfo
 import com.example.bowlingapplication.R
@@ -22,14 +27,16 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.DayViewFacade
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView
 import java.text.SimpleDateFormat
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 
 class GraphFragment : Fragment() {
     private var _binding: FragmentGraphBinding? = null
     private val binding get() = _binding!!
-
+    val dateList = arrayListOf<String>()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -121,11 +128,16 @@ class GraphFragment : Fragment() {
         }
 
         val calendarView = binding.calendarView
-        val dateList = arrayListOf<String>()
-        db.collection("dateList").get().addOnSuccessListener {
-            documents -> for(document in documents) {
-            dateList.add(document.id)
-        }
+        calendarView.selectionMode = MaterialCalendarView.SELECTION_MODE_SINGLE
+        calendarView.setSelectedDate(CalendarDay.today())
+
+
+
+        db.collection("dateList").get().addOnSuccessListener { documents ->
+            for (document in documents) {
+                dateList.add(document.id)
+            }
+            calendarView.addDecorator(CustomDayViewDecorator(dateList))
 
         }
         calendarView.setOnDateChangedListener { _, date, _ ->
@@ -204,5 +216,64 @@ class GraphFragment : Fragment() {
 
     }
 
+    @SuppressLint("ParcelCreator")
+    class TodayDecorator : DayViewDecorator(),
+        com.prolificinteractive.materialcalendarview.DayViewDecorator {
+        private var date = CalendarDay.today()
+
+        override fun shouldDecorate(day: CalendarDay?): Boolean {
+            return day?.equals(date)!!
+        }
+
+        override fun decorate(view: DayViewFacade?) {
+            view?.addSpan(StyleSpan(Typeface.BOLD))
+            view?.addSpan(RelativeSizeSpan(1.4f))
+            view?.addSpan(ForegroundColorSpan(Color.parseColor("#1D872A")))
+        }
+
+        override fun describeContents(): Int {
+            TODO("Not yet implemented")
+        }
+
+        override fun writeToParcel(p0: Parcel, p1: Int) {
+            TODO("Not yet implemented")
+        }
+    }
+
+    @SuppressLint("ParcelCreator")
+    class CustomDayViewDecorator(private val dateList: ArrayList<String>) : DayViewDecorator(),
+        com.prolificinteractive.materialcalendarview.DayViewDecorator {
+        override fun shouldDecorate(day: CalendarDay?): Boolean {
+            val dateFormat = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
+            for (dateString in dateList) {
+                val date = dateFormat.parse(dateString)
+                val calendar = Calendar.getInstance().apply {
+                    time = date
+                }
+                val year = calendar.get(Calendar.YEAR)
+                val month = calendar.get(Calendar.MONTH) + 1 // Calendar.MONTH의 범위는 0부터 11이므로 1을 더해줍니다.
+                val dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
+                val calendarDay = CalendarDay.from(year, month, dayOfMonth)
+                if (day?.equals(calendarDay) == true) {
+                    return true
+                }
+            }
+            return false
+        }
+
+        override fun decorate(view: DayViewFacade?) {
+            view?.addSpan(StyleSpan(Typeface.BOLD))
+            view?.addSpan(RelativeSizeSpan(1.6f))
+            view?.addSpan(ForegroundColorSpan(Color.parseColor("#FF0000")))
+        }
+
+        override fun describeContents(): Int {
+            TODO("Not yet implemented")
+        }
+
+        override fun writeToParcel(p0: Parcel, p1: Int) {
+            TODO("Not yet implemented")
+        }
+    }
 }
 

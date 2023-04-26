@@ -17,6 +17,7 @@ class ShowPlayerAdapter : RecyclerView.Adapter<ShowPlayerAdapter.ViewHolder>() {
         val playerLosses: TextView = itemView.findViewById(R.id.player_loss)
         val playerCosts: TextView = itemView.findViewById(R.id.player_cost)
         val playerRatings: TextView = itemView.findViewById(R.id.player_ratings)
+        val playerRanking: TextView = itemView.findViewById(R.id.player_ranking)
 
         fun bind(item: PlayerInfo){
             playerName.text = item.name
@@ -25,6 +26,7 @@ class ShowPlayerAdapter : RecyclerView.Adapter<ShowPlayerAdapter.ViewHolder>() {
             playerLosses.text = item.losses.toString()
             playerCosts.text = (item.draws * 2500 + item.losses * 5000).toString()
             playerRatings.text = String.format("%.2f", (item.wins.toFloat() / (item.wins + item.draws + item.losses) * 100))
+            playerRanking.text = (adapterPosition+1).toString()
         }
     }
 
