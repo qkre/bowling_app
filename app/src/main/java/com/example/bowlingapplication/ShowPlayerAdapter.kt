@@ -21,6 +21,7 @@ class ShowPlayerAdapter : RecyclerView.Adapter<ShowPlayerAdapter.ViewHolder>() {
         val playerCosts: TextView = itemView.findViewById(R.id.player_cost)
         val playerRatings: TextView = itemView.findViewById(R.id.player_ratings)
         val playerRanking: TextView = itemView.findViewById(R.id.player_ranking)
+        val playerGames: TextView = itemView.findViewById(R.id.player_games)
 
         private val onLongClickListener = View.OnLongClickListener {
             // 길게 눌렀을 때의 처리 코드 작성
@@ -40,6 +41,7 @@ class ShowPlayerAdapter : RecyclerView.Adapter<ShowPlayerAdapter.ViewHolder>() {
             playerCosts.text = (item.draws * 2500 + item.losses * 5000).toString()
             playerRatings.text = String.format("%.2f", (item.wins.toFloat() / (item.wins + item.draws + item.losses) * 100))
             playerRanking.text = (adapterPosition+1).toString()
+            playerGames.text = (item.wins + item.draws + item.losses).toString()
         }
     }
 

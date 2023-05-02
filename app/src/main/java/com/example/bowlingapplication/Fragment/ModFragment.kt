@@ -80,12 +80,12 @@ class ModFragment : Fragment() {
                 val builder = AlertDialog.Builder(requireContext())
                 val dialogView =
                     LayoutInflater.from(requireContext())
-                        .inflate(R.layout.test_add_player_data, null)
+                        .inflate(R.layout.add_new_player, null)
                 builder.setView(dialogView)
 
                 builder.setPositiveButton("추가") { _, _ ->
                     val playerName =
-                        dialogView.findViewById<EditText>(R.id.player_name).text.toString()
+                        dialogView.findViewById<EditText>(R.id.new_player_name).text.toString()
                     myPlayer.add(PlayerInfo(playerName, 0, 0, 0))
                     addPlayerAdapter.setItems(myPlayer)
                 }

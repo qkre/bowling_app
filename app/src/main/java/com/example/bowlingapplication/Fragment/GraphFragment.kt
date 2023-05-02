@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bowlingapplication.PlayerInfo
@@ -39,9 +40,7 @@ class GraphFragment : Fragment() {
     private val binding get() = _binding!!
     val dateList = arrayListOf<String>()
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentGraphBinding.inflate(inflater, container, false)
         return binding.root
@@ -94,32 +93,47 @@ class GraphFragment : Fragment() {
             ModFragment.arguments = bundle
 
             requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.frame_layout, ModFragment)
-                .addToBackStack(null)
-                .commit()
+                .replace(R.id.frame_layout, ModFragment).addToBackStack(null).commit()
         }
 
         binding.btnDayClear.setOnClickListener {
-            AlertDialog.Builder(requireContext())
-                .setTitle("데이터 삭제")
-                .setMessage("정말 모든 데이터를 삭제하시겠습니까?")
-                .setPositiveButton("예") { _, _ ->
-                    val dateRef = db.collection("dateList")
-                    dateRef.get().addOnSuccessListener { documents ->
-                        for (document in documents) {
-                            if (document.id == dateKey) {
-                                document.reference.delete()
-                                dateList.remove(dateKey)
-                                Log.d("dateList :: ", dateList.toString())
-                            }
-                        }
-                        calendarView.removeDecorators()
-                        calendarView.addDecorator(CustomDayViewDecorator(dateList))
+            Toast.makeText(requireContext(), "삭제하고 싶으시면 버튼을 길게 눌러주세요.", Toast.LENGTH_SHORT).show()
+        }
+
+        binding.btnDayClear.setOnLongClickListener {
+            val dateRef = db.collection("dateList")
+            dateRef.get().addOnSuccessListener { documents ->
+                for (document in documents) {
+                    if (document.id == dateKey) {
+                        document.reference.delete()
+                        dateList.remove(dateKey)
+                        Log.d("dateList :: ", dateList.toString())
                     }
-                }.setNegativeButton("아니오", null).show()
+                }
+                calendarView.removeDecorators()
+                calendarView.addDecorator(CustomDayViewDecorator(dateList))
+
+                val collectionRef = db.collection(dateKey)
+                collectionRef.get().addOnSuccessListener { documents ->
+                    for (document in documents) {
+                        document.reference.delete()
+                    }
+                    // Delete the collection after all documents have been deleted
+                    collectionRef.document().delete().addOnSuccessListener {
+                        Log.d(ContentValues.TAG, "Collection successfully deleted!")
+                    }.addOnFailureListener { exception ->
+                        Log.w(ContentValues.TAG, "Error deleting collection", exception)
+                    }
+                    val myPlayer = arrayListOf<PlayerInfo>()
+                    showPlayerMiniAdapter.setItems(myPlayer)
+                }.addOnFailureListener { exception ->
+                    Log.w(ContentValues.TAG, "Error deleting documents", exception)
+                }
+            }
+
 
             val collectionRef = db.collection(dateKey)
-            // Delete all documents in the collection
+// Delete all documents in the collection
             collectionRef.get().addOnSuccessListener { documents ->
                 for (document in documents) {
                     document.reference.delete()
@@ -128,7 +142,7 @@ class GraphFragment : Fragment() {
                 Log.w(ContentValues.TAG, "Error deleting documents", exception)
             }
 
-            // Delete the collection
+// Delete the collection
             collectionRef.document().delete().addOnSuccessListener {
                 Log.d(ContentValues.TAG, "Collection successfully deleted!")
             }.addOnFailureListener { exception ->
@@ -137,7 +151,11 @@ class GraphFragment : Fragment() {
             val myPlayer = arrayListOf<PlayerInfo>()
             showPlayerMiniAdapter.setItems(myPlayer)
 
+            Toast.makeText(requireContext(), "데이터가 삭제되었습니다.", Toast.LENGTH_SHORT).show()
+
+            true
         }
+
 
 
 
@@ -186,34 +204,29 @@ class GraphFragment : Fragment() {
             }
 
             binding.btnDayClear.setOnClickListener {
-                AlertDialog.Builder(requireContext())
-                    .setTitle("데이터 삭제")
-                    .setMessage("정말 모든 데이터를 삭제하시겠습니까?")
-                    .setPositiveButton("예") { _, _ ->
-                        val dateRef = db.collection("dateList")
-                        dateRef.get().addOnSuccessListener { documents ->
-                            for (document in documents) {
-                                if (document.id == dateKey) {
-                                    document.reference.delete()
-                                    dateList.remove(dateKey)
-                                    Log.d("dateList :: ", dateList.toString())
-                                }
-                            }
-                            calendarView.removeDecorators()
-                            calendarView.addDecorator(CustomDayViewDecorator(dateList))
-                        }
-                        val collectionRef = db.collection(dateKey)
+                Toast.makeText(requireContext(), "삭제하고 싶으시면 버튼을 길게 눌러주세요.", Toast.LENGTH_SHORT)
+                    .show()
+            }
 
-                        // Delete all documents in the collection
-                        collectionRef.get().addOnSuccessListener { documents ->
-                            for (document in documents) {
-                                document.reference.delete()
-                            }
-                        }.addOnFailureListener { exception ->
-                            Log.w(ContentValues.TAG, "Error deleting documents", exception)
+            binding.btnDayClear.setOnLongClickListener {
+                val dateRef = db.collection("dateList")
+                dateRef.get().addOnSuccessListener { documents ->
+                    for (document in documents) {
+                        if (document.id == dateKey) {
+                            document.reference.delete()
+                            dateList.remove(dateKey)
+                            Log.d("dateList :: ", dateList.toString())
                         }
+                    }
+                    calendarView.removeDecorators()
+                    calendarView.addDecorator(CustomDayViewDecorator(dateList))
 
-                        // Delete the collection
+                    val collectionRef = db.collection(dateKey)
+                    collectionRef.get().addOnSuccessListener { documents ->
+                        for (document in documents) {
+                            document.reference.delete()
+                        }
+                        // Delete the collection after all documents have been deleted
                         collectionRef.document().delete().addOnSuccessListener {
                             Log.d(ContentValues.TAG, "Collection successfully deleted!")
                         }.addOnFailureListener { exception ->
@@ -221,7 +234,32 @@ class GraphFragment : Fragment() {
                         }
                         val myPlayer = arrayListOf<PlayerInfo>()
                         showPlayerMiniAdapter.setItems(myPlayer)
-                    }.setNegativeButton("아니오", null).show()
+                    }.addOnFailureListener { exception ->
+                        Log.w(ContentValues.TAG, "Error deleting documents", exception)
+                    }
+                }
+
+
+                val collectionRef = db.collection(dateKey)
+// Delete all documents in the collection
+                collectionRef.get().addOnSuccessListener { documents ->
+                    for (document in documents) {
+                        document.reference.delete()
+                    }
+                }.addOnFailureListener { exception ->
+                    Log.w(ContentValues.TAG, "Error deleting documents", exception)
+                }
+
+// Delete the collection
+                collectionRef.document().delete().addOnSuccessListener {
+                    Log.d(ContentValues.TAG, "Collection successfully deleted!")
+                }.addOnFailureListener { exception ->
+                    Log.w(ContentValues.TAG, "Error deleting collection", exception)
+                }
+                val myPlayer = arrayListOf<PlayerInfo>()
+                showPlayerMiniAdapter.setItems(myPlayer)
+
+                true
             }
 
             binding.btnDayMod.setOnClickListener {
@@ -231,14 +269,11 @@ class GraphFragment : Fragment() {
                 Log.d("dateKey :: ", dateKey)
 
                 requireActivity().supportFragmentManager.beginTransaction()
-                    .replace(R.id.frame_layout, ModFragment)
-                    .addToBackStack(null)
-                    .commit()
+                    .replace(R.id.frame_layout, ModFragment).addToBackStack(null).commit()
             }
 
 
         }
-
 
     }
 

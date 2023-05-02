@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bowlingapplication.PlayerInfo
 import com.example.bowlingapplication.ShowPlayerAdapter
@@ -88,28 +89,27 @@ class MoneyFragment : Fragment() {
         }
 
         binding.btnClear.setOnClickListener {
-            AlertDialog.Builder(requireContext())
-                .setTitle("데이터 삭제")
-                .setMessage("정말 모든 데이터를 삭제하시겠습니까?")
-                .setPositiveButton("예") { _, _ ->
-                    dateList.get().addOnSuccessListener { documents ->
-                        for (document in documents) {
-                            val collectionRef = db.collection(document.id)
-                            collectionRef.get().addOnSuccessListener { documents ->
-                                for (document in documents) {
-                                    document.reference.delete()
-                                }
-                            }
-                            collectionRef.document().delete()
-                        }
-
+            Toast.makeText(requireContext(), "삭제하고 싶으시면 버튼을 길게 눌러주세요.", Toast.LENGTH_SHORT).show()
+        }
+        binding.btnClear.setOnLongClickListener{
+            dateList.get().addOnSuccessListener { documents ->
+                for (document in documents) {
+                    val collectionRef = db.collection(document.id)
+                    collectionRef.get().addOnSuccessListener { documents ->
                         for (document in documents) {
                             document.reference.delete()
                         }
-                        dateList.document().delete()
                     }
-                    showPlayerAdapter.setItems(arrayListOf())
-                }.setNegativeButton("아니오", null).show()
+                    collectionRef.document().delete()
+                }
+
+                for (document in documents) {
+                    document.reference.delete()
+                }
+                dateList.document().delete()
+            }
+            showPlayerAdapter.setItems(arrayListOf())
+            true
         }
 
     }

@@ -55,7 +55,7 @@ class TestHomeFragment : Fragment() {
 
             val builder = AlertDialog.Builder(requireContext())
             val dialogView =
-                LayoutInflater.from(requireContext()).inflate(R.layout.test_add_player_data, null)
+                LayoutInflater.from(requireContext()).inflate(R.layout.add_player_data, null)
             builder.setView(dialogView)
 
             builder.setPositiveButton("추가") { _, _ ->
